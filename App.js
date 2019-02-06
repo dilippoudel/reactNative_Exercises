@@ -1,66 +1,95 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, FlatList } from 'react-native';
 
 export default class App extends React.Component {
-  constructor(props){
-    super(props);
-    this.state = {randomNums: null, guessNums: null, count: 0}
-  }
-  generateRandom(){
-    const random = Math.floor(Math.random()*100) + 1;
-    this.setState({randomNums: random})
-  }
- 
-  numsCheck = () => { 
-    this.generateRandom();
-    if(this.state.randomNums !== this.state.guessNums){
-      this.setState((prevState)=> {
-        return {count: prevState.count + 1}
-      });
-      return this.state.count;
-    }
-    return this.state.count;
-  }  
+	constructor(props) {
+		super(props);
+		this.state = { firstInput: '', secondInput: '', results: '', data: [] };
+	}
 
-  render() {
-    const {guessNums, randomNums, count} = this.state;
-    const a = parseInt(guessNums);
-    const b = parseInt(randomNums);
-    const c = !randomNums ? null : <Text>Try Again</Text>;
-    const result = (a === b)
-    ? <Text style = {{fontWeight: 'bold', fontSize: 20}}>Congratulation! Your guessed is matched in {count} attempts.</Text> 
-    : a > b ? <Text>Your guess is too high.</Text>
-    : a < b ? <Text>Your guess is too low.</Text>
-    : <Text>{c}</Text>
-    return (
-      <View style={styles.container}>
-        <Text style = {{fontWeight: 'bold', flex: 1/10}}>Guess a number between (1 - 100)</Text>
-        <View>
-        <TextInput 
-        onChangeText = {(guessNums) => this.setState({guessNums})}
-        value = {this.state.guessNums}
-        keyboardType = 'numeric'
-         style = {{width: 200, borderColor: 'gray', borderWidth: 1, flex: 1/5}}/>
-        </View>
-        <View style = {{ flexDirection: 'row', justifyContent: 'space-between', backgroundColor:'skyblue'}}>
-        <View style={{flex: 1/3}}>
-      <Button  onPress = {this.numsCheck} title = "Make Guess"></Button>
-
-        </View>
-
-        </View>
-      <Text>Generate random number: {this.state.randomNums}</Text>
-      {result}
-      </View>
-    );
-  }
+	addNumber = () => {
+		this.setState({ results: parseInt(this.state.firstInput) + parseInt(this.state.secondInput) });
+		const result = parseInt(this.state.firstInput) + parseInt(this.state.secondInput);
+		const text = `${this.state.firstInput} + ${this.state.secondInput}  =  ${result}`;
+		this.setState({ data: [...this.state.data, { key: text }] });
+	};
+	subtractNumber = () => {
+		this.setState({ results: parseInt(this.state.firstInput) - parseInt(this.state.secondInput) });
+		const result = parseInt(this.state.firstInput) - parseInt(this.state.secondInput);
+		const text = `${this.state.firstInput} - ${this.state.secondInput}  =  ${result}`;
+		this.setState({ data: [...this.state.data, { key:text }] });
+	};
+	render() {
+		return (
+			<View style={styles.container}>
+				<View>
+					<Text style={styles.text}>Calculator</Text>
+				</View>
+				<Text style={styles.text}>Result: {this.state.results}</Text>
+				<View />
+				<View>
+					<TextInput
+						style={styles.inputText}
+						onChangeText={firstInput => this.setState({ firstInput })}
+						value={this.state.firstInput}
+						keyboardType="numeric"
+					/>
+				</View>
+				<View>
+					<TextInput
+						style={styles.inputText}
+						onChangeText={secondInput => this.setState({ secondInput })}
+						value={this.state.secondInput}
+						keyboardType="numeric"
+					/>
+				</View>
+				<View>
+					<View style={styles.buttonText}>
+						<View style={styles.button}>
+							<Button onPress={this.addNumber} title="+" />
+						</View>
+						<View style={styles.button}>
+							<Button onPress={this.subtractNumber} title="-" />
+						</View>
+					</View>
+				</View>
+				<View>
+					<Text>History</Text>
+					<FlatList data={this.state.data} renderItem={({ item }) => <Text>{item.key}</Text>} />
+				</View>
+			</View>
+		);
+	}
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  }
+	container: {
+		flex: 1,
+		padding: 30,
+		backgroundColor: '#fff',
+		alignItems: 'center',
+		justifyContent: 'flex-start',
+	},
+	inputText: {
+		marginTop: 10,
+		height: 30,
+		width: 200,
+		padding: 5,
+		borderColor: 'gray',
+		borderWidth: 1,
+	},
+	text: {
+		fontSize: 25,
+	},
+	buttonText: {
+		marginTop: 10,
+		marginLeft: 10,
+		padding: 10,
+		flexDirection: 'row',
+		justifyContent: 'space-around',
+		backgroundColor: 'lightgray',
+	},
+	button: {
+		marginHorizontal: 20,
+	},
 });
