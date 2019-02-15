@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Button , TextInput, FlatList} from 'react-native';
 class HomeScreen extends Component {
-  state = {firstInput: 0, secondInput : 0, result : 0, data : []}
+  state = {firstInput: '', secondInput : '', result : '', data : []}
   static navigationOptions = { title: 'Home'};
   addNumber = () => {
 		const sum = parseInt(this.state.firstInput) + parseInt(this.state.secondInput);
