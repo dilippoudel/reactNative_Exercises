@@ -5,7 +5,7 @@ const Button = ({onPress})=> {
     <TouchableOpacity 
     onPress = {onPress}
     style = {styles.buttonStyles}>
-    <Text style = {styles.textStyles}>Find</Text>
+    <Text style = {styles.textStyles}>Convert</Text>
     </TouchableOpacity>
   )
 }
@@ -20,13 +20,14 @@ const styles = StyleSheet.create({
     paddingBottom: 10
   },
   buttonStyles: {
-    flex: 1, 
+    //flex: 1, 
     alignSelf: 'stretch',
     backgroundColor: '#fff',
     borderColor: '#007aff',
     borderWidth: 1,
     borderRadius: 5,
-    marginLeft: 5,
-    marginRight: 5
+    marginLeft: 50,
+    marginRight: 5,
+    width: 100,
   }
 })
